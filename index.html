@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>味纯园 - Handmade Noodles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Noto Serif SC', serif;
+      background-color: #fdf8f2;
+      color: #333;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    header img.logo {
+      height: 60px;
+    }
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #c0392b;
+    }
+    .language-switcher {
+      margin-left: 1rem;
+    }
+    .hero {
+      text-align: center;
+      padding: 8rem 2rem 4rem 2rem;
+      background-color: #fff;
+    }
+    .hero img {
+      max-width: 100%;
+      height: auto;
+    }
+    .story {
+      padding: 2rem;
+      background: #fff7ec;
+    }
+    .story h2 {
+      text-align: center;
+    }
+    .story p {
+      max-width: 800px;
+      margin: 1rem auto;
+      line-height: 1.8;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .menu {
+      text-align: center;
+      padding: 2rem;
+    }
+    .menu button {
+      padding: 0.7rem 1.2rem;
+      background: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .menu button:hover {
+      background: #a83223;
+    }
+    .reserve-button {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: #c0392b;
+      color: white;
+      border: none;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 2000;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    .form-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+    }
+    .form-modal form {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .form-modal input, .form-modal textarea {
+      padding: 0.5rem;
+      width: 100%;
+    }
+    .form-modal button {
+      background: #c0392b;
+      color: white;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+    .menu-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+    }
+    .menu-modal iframe {
+      width: 80%;
+      height: 90%;
+      border: none;
+      border-radius: 12px;
+      background: white;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+        .impressum-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+    }
+
+        .privacy-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo1.jpg" alt="味纯园 logo" class="logo">
+    <nav>
+      <a href="#story" data-i18n="our_story">Unsere Geschichte</a>
+      <a href="#" onclick="document.querySelector('.menu-modal').style.display='flex'" data-i18n="menu">Menü</a>
+      <a href="#" onclick="document.querySelector('.impressum-modal').style.display='flex'" data-i18n="impressum">Impressum</a>
+      <a href="#" onclick="document.querySelector('.privacy-modal').style.display='flex'" data-i18n="privacy">Datenschutz</a>
+      <div class="language-switcher">
+        <select id="language-select">
+          <option value="de">Deutsch</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="es">Español</option>
+          <option value="it">Italiano</option>
+        </select>
+      </div>
+    </nav>
+  </header>
+
+  <button class="reserve-button" onclick="document.querySelector('.form-modal').style.display='flex'" data-i18n="reserve_now">Jetzt reservieren</button>
+
+  <section class="hero">
+    <div style="display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;">
+    <img src="logo1.jpg" alt="味纯园 Logo Groß" style="max-width: 600px; height: auto;">
+
+    <a href="chef.jpg" target="_blank">
+  <img src="chef.jpg" style="width: 600px; height: auto;" alt="缩略图">
+</a>
+  </div>
+  </section>
+
+  <section id="story" class="story">
+    <h2 data-i18n="story_title">Die Philosophie einer Schüssel Nudeln
+   “Handgezogene Nudelperfektion- wie Seide in einer Schüssel”</h2>
+    <p data-i18n="story_paragraph">
+       Silk -Bowls Nudelhaus · Ein Versprechen handgemachter Geschmackstreue**
+Frische ist unser Fundament, Handwerkskunst die Seele“
+
+In der hektischen Stadt entscheidet sich
+Silk-Bowls Nudelhaus für die Langsamkeit —
+Täglich in der Morgendämmerung beziehen wir frisches Rindfleisch, Sehnen und Kutteln,
+schmoren sie getrennt 1-2 Stunden bis das Fleisch zart, die Sehnen geliert und die Kutteln bissfest sind.
+Mehl wird vor Ort geknetet, gezogen, geschnitten —
+mit Handarbeit formen wir zähe Lebenskraft,
+keine Fertigteile, kein Kompromiss.
+
+ 🌙 Die Wärme einer Schüssel Nudeln: Ein Erbe
+Vom Druck erfahrener Fingerkuppen
+zum in der Brühe tanzenden Aromenrauch —
+Mit beinahe störrischer Beharrlichkeit hüten wir den ursprünglichen Geschmack chinesischer Handzupfnudeln.
+Diese Schüssel ist Handwerk,
+mehr noch: eine Fortführung von Hingabe.
+
+ 🌟 Silk-Bowls Nudelhaus: Mit reinem Herzen · reinem Geschmack.
+Wir servieren auf der Zunge die Aufrichtigkeit des Frischzubereiteten,
+um Chinas Handnudeltradition ein bescheidenes Stück Wegs zu begleiten.
+    </p>
+
+    <video controls style="width: 50%; display: block; margin: 2rem auto; border-radius: 12px;" poster="video-cover.jpg">
+  <source src="video.mp4" type="video/mp4">
+</video>
+
+  </section>
+
+  <section class="gallery" style="display: flex; flex-direction: column; gap: 2rem; padding: 2rem;">
+  <div style="display: flex; align-items: center; gap: 1.5rem;">
+    <img src="1.jpg" style="width: 400px; height: auto; border-radius: 8px;">
+    <div>
+      <h3 data-i18n="braised_beef_noodles_title">„Geschmorte Rindfleich La Mian“</h3>
+      <p data-i18n="braised_beef_noodles_desc">Zart geschmortes Rindbauchfleisch – saftig, aromatisch und butterweich. Handgezogene Nudeln mit perfektem Biss, vollgesogen mit würziger Brühe – pure chinesische Hausmannskost! Ein Löffel scharfes Chiliöl verleiht die letzte Note – so versteht man die Seele echter chinesischer Rindfleischnudeln! </p>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 1.5rem;">
+    <img src="2.jpg" style="width: 400px; height: auto; border-radius: 8px;">
+    <div>
+      <h3 data-i18n="triple_beef_combo_title">„Triple Beef Combo La Mian“</h3>
+      <p data-i18n="triple_beef_combo_desc">Acht Stunden langsam geköchelte Rinderknochen-Brühe – klar und würzig. Handgezogene Nudeln, zart yet bissfest, bedeckt mit dreierlei Rind: Bauch, Sehne und Filet. Ein Schuss geheime Meisterbrühe, frischer Frühlingszwiebelschnitt – rote Ölperlen tanzen auf der Oberfläche. Chinesische Geschmackskunst, die Sie mit einem Biss verzaubert! </p>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 1.5rem;">
+    <img src="3.jpg" style="width: 400px; height: auto; border-radius: 8px;">
+    <div>
+      <h3 data-i18n="beef_mix_noodle_soup_title">„Rindermix-Nudelnsuppe“</h3>
+      <p data-i18n="beef_mix_noodle_soup_desc">Handgezogene breite/dünne Nudeln – federnd wie Bogensehnen – kombiniert mit dreierlei Rinderspezialitäten: zartschmelzenden Sehnen, knusprigem Blättermagen und bissfestem Kutteln. Alles vereint in jahrzehntealter Meisterbrühe, die mit ihrem tiefen Aroma bezaubert. Ein Löffel glänzend-rotes, aber nicht zu scharfes Chiliöl krönt das Werk, garniert mit Koriander und der perfekten Harmonie aus salzig-süß-umami – ein Höhepunkt traditioneller chinesischer Nudelkunst!
+</p>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 1.5rem;">
+    <img src="4.jpg" style="width: 400px; height: auto; border-radius: 8px;">
+    <div>
+      <h3 data-i18n="noodles_sesame_paste_title">Nudel mit Sesampaste</h3>
+      <p data-i18n="noodles_sesame_paste_desc">Frische handgezogene Nudeln – eiskalt abgeschreckt für den perfekten Biss – überzogen mit geheimer Sesamsoße: eine harmonische Dreieinigkeit aus Sesampaste, Sojasoße und Reisessig, die sämig an der Schüssel haftet. Gurkenstreifen, Sprossen, Karotten und frisch geröstete Erdnussbrösel bilden knusprige Kontraste zur seidigen Glätte. Das Geheimnis liegt im nussigen Duft und der sanften Süße der Sesamcreme – eine meditative Geschmackserfahrung wie „ZEN in einer Schüssel“. </p>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 1.5rem;">
+    <img src="5.jpg" style="width: 400px; height: auto; border-radius: 8px;">
+    <div>
+      <h3 data-i18n="peking_bean_paste_noodles_title">„Peking-Bohnenpaste-Nudeln （Zhajiang Nudeln)“</h3>
+      <p data-i18n="peking_bean_paste_noodles_desc">Handgerollte Nudeln mit perfekter Bissfestigkeit, überzogen mit der klassischen "Öl-rote-Soße" – gebratene Schweinebauchwürfel in süßer Bohnenpaste und fermentierter Sojabohnensauce, die einen tiefbraunen, aromatischen Mantel bildet. Dazu frische Gurkenstreifen, Karotten oder Paprika, garniert mit knusprigen Erdnüssen – ein Farbenspiel wie das lebendige Treppen in den Pekinger Hutongs. Das Geheimnis? Die perfekte Balance aus salzig und süß, die jede einzelne Nudel umhüllt – ein echter Geschmack des alten Peking!
+</p>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 1.5rem;">
+    <img src="6.jpg" style="width: 400px; height: auto; border-radius: 8px;">
+    <div>
+      <h3 data-i18n="sizzling_oil_noodles_title">„Knisternde Öl-Nudeln“（Öl-übergossene Nudeln)</h3>
+      <p data-i18n="sizzling_oil_noodles_desc">Handgemachte Bandnudeln – breit wie Gürtel – dreimal im kochenden Wasser gezogen, bis sie perfekt bissfest sind. Wenn das heiße Öl mit einem zischenden „Zzzzt!“ über Knoblauch und Chiliflocken gegossen wird, entfaltet sich ein Aroma, das einem das Wasser im Mund zusammenlaufen lässt. Dazu knackige Gurkenstreifen, süße Karotten und goldgeröstete Erdnüsse – einfach umwerfend! Scharf genug zum Schwitzen, aber nicht zu aufdringlich – so gut, dass man die Stäbchen nicht mehr weglegen will!
+</p>
+    </div>
+  </div>
+    </section>
+
+
+  <section id="menu" class="menu">
+    <h2 data-i18n="menu_section_title">Menü</h2>
+    <button onclick="document.querySelector('.menu-modal').style.display='flex'" data-i18n="view_pdf_menu">PDF-Menü ansehen</button>
+  </section>
+
+  <div class="menu-modal" onclick="if(event.target.className==='menu-modal')this.style.display='none'">
+    <iframe src="/c7.pdf"></iframe>
+  </div>
+
+  <div class="form-modal" onclick="if(event.target.className==='form-modal')this.style.display='none'">
+    <form action="mail_handler.php" method="POST">
+      <h2 data-i18n="reservation_form_title">Reservierungsformular</h2>
+      <input type="text" name="Name" data-i18n-placeholder="name_placeholder" placeholder="Name" required>
+      <input type="email" name="email" data-i18n-placeholder="email_placeholder" placeholder="Ihre E-Mail-Adresse" required>
+      <input type="date" name="Datum" data-i18n-placeholder="date_placeholder" required>
+      <input type="time" name="Uhrzeit" data-i18n-placeholder="time_placeholder" required>
+      <input type="number" name="Personen" data-i18n-placeholder="persons_placeholder" placeholder="Anzahl Personen" required>
+      <input type="tel" name="Telefon" data-i18n-placeholder="phone_placeholder" placeholder="Telefonnummer" required>
+      <textarea name="Nachricht" data-i18n-placeholder="notes_placeholder" placeholder="Weitere Hinweise (optional)"></textarea>
+      <button type="submit" data-i18n="submit_button">Absenden</button>
+    </form>
+  </div>
+
+  <footer>
+    <span data-i18n="footer_text">&copy; 2025味纯园 - Handmade Noodles. All rights reserved.</span>
+  </footer>
+
+  <script>
+    const translations = {
+    "de": {
+        "our_story": "Unsere Geschichte",
+        "menu": "Menü",
+        "impressum": "Impressum",
+        "privacy": "Datenschutz",
+        "reserve_now": "Jetzt reservieren",
+        "story_title": "Die Philosophie einer Schüssel Nudeln “Handgezogene Nudelperfektion- wie Seide in einer Schüssel”",
+        "story_paragraph": "Silk -Bowls Nudelhaus · Ein Versprechen handgemachter Geschmackstreue** Frische ist unser Fundament, Handwerkskunst die Seele“ In der hektischen Stadt entscheidet sich Silk-Bowls Nudelhaus für die Langsamkeit — Täglich in der Morgendämmerung beziehen wir frisches Rindfleisch, Sehnen und Kutteln, schmoren sie getrennt 1-2 Stunden bis das Fleisch zart, die Sehnen geliert und die Kutteln bissfest sind. Mehl wird vor Ort geknetet, gezogen, geschnitten — mit Handarbeit formen wir zähe Lebenskraft, keine Fertigteile, kein Kompromiss. 🌙 Die Wärme einer Schüssel Nudeln: Ein Erbe Vom Druck erfahrener Fingerkuppen zum in der Brühe tanzenden Aromenrauch — Mit beinahe störrischer Beharrlichkeit hüten wir den ursprünglichen Geschmack chinesischer Handzupfnudeln. Diese Schüssel ist Handwerk, mehr noch: eine Fortführung von Hingabe. 🌟 Silk-Bowls Nudelhaus: Mit reinem Herzen · reinem Geschmack. Wir servieren auf der Zunge die Aufrichtigkeit des Frischzubereiteten, um Chinas Handnudeltradition ein bescheidenes Stück Wegs zu begleiten.",
+        "braised_beef_noodles_title": "„Geschmorte Rindfleich La Mian“",
+        "braised_beef_noodles_desc": "Zart geschmortes Rindbauchfleisch – saftig, aromatisch und butterweich. Handgezogene Nudeln mit perfektem Biss, vollgesogen mit würziger Brühe – pure chinesische Hausmannskost! Ein Löffel scharfes Chiliöl verleiht die letzte Note – so versteht man die Seele echter chinesischer Rindfleischnudeln!",
+        "triple_beef_combo_title": "„Triple Beef Combo La Mian“",
+        "triple_beef_combo_desc": "Acht Stunden langsam geköchelte Rinderknochen-Brühe – klar und würzig. Handgezogene Nudeln, zart yet bissfest, bedeckt mit dreierlei Rind: Bauch, Sehne und Filet. Ein Schuss geheime Meisterbrühe, frischer Frühlingszwiebelschnitt – rote Ölperlen tanzen auf der Oberfläche. Chinesische Geschmackskunst, die Sie mit einem Biss verzaubert!",
+        "beef_mix_noodle_soup_title": "„Rindermix-Nudelnsuppe“",
+        "beef_mix_noodle_soup_desc": "Handgezogene breite/dünne Nudeln – federnd wie Bogensehnen – kombiniert mit dreierlei Rinderspezialitäten: zartschmelzenden Sehnen, knusprigem Blättermagen und bissfestem Kutteln. Alles vereint in jahrzehntealter Meisterbrühe, die mit ihrem tiefen Aroma bezaubert. Ein Löffel glänzend-rotes, aber nicht zu scharfes Chiliöl krönt das Werk, garniert mit Koriander und der perfekten Harmonie aus salzig-süß-umami – ein Höhepunkt traditioneller chinesischer Nudelkunst!",
+        "noodles_sesame_paste_title": "Nudel mit Sesampaste",
+        "noodles_sesame_paste_desc": "Frische handgezogene Nudeln – eiskalt abgeschreckt für den perfekten Biss – überzogen mit geheimer Sesamsoße: eine harmonische Dreieinigkeit aus Sesampaste, Sojasoße und Reisessig, die sämig an der Schüssel haftet. Gurkenstreifen, Sprossen, Karotten und frisch geröstete Erdnussbrösel bilden knusprige Kontraste zur seidigen Glätte. Das Geheimnis liegt im nussigen Duft und der sanften Süße der Sesamcreme – eine meditative Geschmackserfahrung wie „ZEN in einer Schüssel“.",
+        "peking_bean_paste_noodles_title": "„Peking-Bohnenpaste-Nudeln （Zhajiang Nudeln)“",
+        "peking_bean_paste_noodles_desc": "Handgerollte Nudeln mit perfekter Bissfestigkeit, überzogen mit der klassischen \"Öl-rote-Soße\" – gebratene Schweinebauchwürfel in süßer Bohnenpaste und fermentierter Sojabohnensauce, die einen tiefbraunen, aromatischen Mantel bildet. Dazu frische Gurkenstreifen, Karotten oder Paprika, garniert mit knusprigen Erdnüssen – ein Farbenspiel wie das lebendige Treppen in den Pekinger Hutongs. Das Geheimnis? Die perfekte Balance aus salzig und süß, die jede einzelne Nudel umhüllt – ein echter Geschmack des alten Peking!",
+        "sizzling_oil_noodles_title": "„Knisternde Öl-Nudeln“（Öl-übergossene Nudeln)",
+        "sizzling_oil_noodles_desc": "Handgemachte Bandnudeln – breit wie Gürtel – dreimal im kochenden Wasser gezogen, bis sie perfekt bissfest sind. Wenn das heiße Öl mit einem zischenden „Zzzzt!“ über Knoblauch und Chiliflocken gegossen wird, entfaltet sich ein Aroma, das einem das Wasser im Mund zusammenlaufen lässt. Dazu knackige Gurkenstreifen, süße Karotten und goldgeröstete Erdnüsse – einfach umwerfend! Scharf genug zum Schwitzen, aber nicht zu aufdringlich – so gut, dass man die Stäbchen nicht mehr weglegen will!",
+        "menu_section_title": "Menü",
+        "view_pdf_menu": "PDF-Menü ansehen",
+        "reservation_form_title": "Reservierungsformular",
+        "name_placeholder": "Name",
+        "email_placeholder": "Ihre E-Mail-Adresse",
+        "date_placeholder": "Datum",
+        "time_placeholder": "Uhrzeit",
+        "persons_placeholder": "Anzahl Personen",
+        "phone_placeholder": "Telefonnummer",
+        "notes_placeholder": "Weitere Hinweise (optional)",
+        "submit_button": "Absenden",
+        "footer_text": "&copy; 2025 味纯园 - Handmade Noodles. Alle Rechte vorbehalten.",
+        "cookie_message": "Diese Website verwendet Cookies, um Ihnen das beste Erlebnis zu bieten.",
+        "cookie_dismiss": "Verstanden",
+        "cookie_link": "Mehr erfahren",
+        "impressum_title": "Impressum",
+        "impressum_address": "Weserstraße 12",
+        "impressum_city": "60329 Frankfurt am Main",
+        "impressum_tel": "Tel. (069) 234779",
+        "impressum_email": "E-Mail: silkbowls@gmail.com",
+        "impressum_gesch": "Geschäftsführer: Jia Xing Zhu & Wenjun Wang",
+        "close_button": "Schließen",
+        "privacy_title": "Datenschutzerklärung",
+        "privacy_responsible": "Verantwortlich für die Datenverarbeitung:",
+        "privacy_data_collection_title": "Erhebung und Speicherung personenbezogener Daten",
+        "privacy_data_collection_text": "Beim Ausfüllen des Reservierungsformulars erheben wir folgende Daten: Name, Telefonnummer, E-Mail-Adresse, Datum/Uhrzeit der Reservierung und sonstige Anmerkungen.",
+        "privacy_purpose_title": "Zweck der Datenverarbeitung",
+        "privacy_purpose_text": "Die Daten werden ausschließlich zur Bearbeitung Ihrer Reservierung verwendet und nicht an Dritte weitergegeben.",
+        "privacy_rights_title": "Ihre Rechte",
+        "privacy_rights_text": "Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer personenbezogenen Daten.",
+        "privacy_contact_title": "Kontakt",
+        "privacy_contact_text": "Bei Fragen zum Datenschutz kontaktieren Sie uns bitte unter silkbowls@gmail.com."
+    },
+    "en": {
+        "our_story": "Our Story",
+        "menu": "Menu",
+        "impressum": "Imprint",
+        "privacy": "Privacy Policy",
+        "reserve_now": "Reserve Now",
+        "story_title": "The Philosophy of a Bowl of Noodles “Hand-Pulled Noodle Perfection – Like Silk in a Bowl”",
+        "story_paragraph": "Silk-Bowls Noodle House · A Promise of Handmade Authenticity** Freshness is our foundation, craftsmanship our soul. In the bustling city, Silk-Bowls Noodle House chooses slowness — Daily at dawn, we source fresh beef, tendons, and tripe, stewing them separately for 1-2 hours until the meat is tender, the tendons gelatinous, and the tripe firm to the bite. Flour is kneaded, pulled, cut on-site — with manual labor, we shape resilient vitality, no pre-made parts, no compromise. 🌙 The warmth of a bowl of noodles: A heritage From the pressure of experienced fingertips to the aromatic steam dancing in the broth — With almost stubborn persistence, we guard the original taste of Chinese hand-pulled noodles. This bowl is craftsmanship, more: a continuation of dedication. 🌟 Silk-Bowls Noodle House: With a pure heart · pure taste. We serve on the tongue the sincerity of freshly prepared food, to accompany China's hand-pulled noodle tradition a modest piece of the way.",
+        "braised_beef_noodles_title": "“Braised Beef La Mian”",
+        "braised_beef_noodles_desc": "Tenderly braised beef brisket – juicy, aromatic, and buttery soft. Hand-pulled noodles with perfect bite, soaked in flavorful broth – pure Chinese home cooking! A spoon of spicy chili oil adds the finishing touch – this is how you understand the soul of authentic Chinese beef noodles!",
+        "triple_beef_combo_title": "“Triple Beef Combo La Mian”",
+        "triple_beef_combo_desc": "Eight hours of slow-simmered beef bone broth – clear and flavorful. Hand-pulled noodles, delicate yet firm, topped with three kinds of beef: brisket, tendon, and fillet. A dash of secret master broth, fresh green onion – red oil pearls dance on the surface. Chinese culinary art that enchants you with one bite!",
+        "beef_mix_noodle_soup_title": "“Mixed Beef Noodle Soup”",
+        "beef_mix_noodle_soup_desc": "Hand-pulled wide/thin noodles – springy like bowstrings – combined with three beef specialties: melt-in-your-mouth tendons, crispy omasum, and firm tripe. All united in decades-old master broth, enchanting with its deep aroma. A spoon of glistening red, but not too spicy, chili oil crowns the work, garnished with cilantro and the perfect harmony of salty-sweet-umami – a highlight of traditional Chinese noodle art!",
+        "noodles_sesame_paste_title": "Noodles with Sesame Paste",
+        "noodles_sesame_paste_desc": "Fresh hand-pulled noodles – shock-chilled for the perfect bite – coated with secret sesame sauce: a harmonious trinity of sesame paste, soy sauce, and rice vinegar, clinging creamy to the bowl. Cucumber strips, sprouts, carrots, and freshly roasted peanut crumbs provide crispy contrasts to the silky smoothness. The secret lies in the nutty aroma and the gentle sweetness of the sesame cream – a meditative taste experience like “ZEN in a Bowl.”",
+        "peking_bean_paste_noodles_title": "“Peking Bean Paste Noodles (Zhajiang Mian)”",
+        "peking_bean_paste_noodles_desc": "Hand-rolled noodles with perfect al dente texture, coated with the classic \"oil-red sauce\" – fried pork belly cubes in sweet bean paste and fermented soybean sauce, forming a deep brown, aromatic coating. Accompanied by fresh cucumber strips, carrots or bell peppers, garnished with crispy peanuts – a play of colors like the lively stairs in Beijing's Hutongs. The secret? The perfect balance of salty and sweet, enveloping every single noodle – a true taste of old Peking!",
+        "sizzling_oil_noodles_title": "“Sizzling Oil Noodles”",
+        "sizzling_oil_noodles_desc": "Handmade belt noodles – wide as belts – pulled three times in boiling water until perfectly al dente. When the hot oil sizzles with a 'Zzzzt!' over garlic and chili flakes, an aroma unfolds that makes your mouth water. Plus crunchy cucumber strips, sweet carrots, and golden roasted peanuts – simply stunning! Spicy enough to make you sweat, but not too overpowering – so good you won't want to put your chopsticks down!",
+        "menu_section_title": "Menu",
+        "view_pdf_menu": "View PDF Menu",
+        "reservation_form_title": "Reservation Form",
+        "name_placeholder": "Name",
+        "email_placeholder": "Your Email Address",
+        "date_placeholder": "Date",
+        "time_placeholder": "Time",
+        "persons_placeholder": "Number of Persons",
+        "phone_placeholder": "Phone Number",
+        "notes_placeholder": "Additional Notes (optional)",
+        "submit_button": "Submit",
+        "footer_text": "&copy; 2025 味纯园 - Handmade Noodles. All rights reserved.",
+        "cookie_message": "This website uses cookies to ensure you get the best experience.",
+        "cookie_dismiss": "Got it!",
+        "cookie_link": "Learn more",
+        "impressum_title": "Imprint",
+        "impressum_address": "Weserstraße 12",
+        "impressum_city": "60329 Frankfurt am Main",
+        "impressum_tel": "Tel. (069) 234779",
+        "impressum_email": "E-Mail: silkbowls@gmail.com",
+        "impressum_gesch": "Managing Directors: Jia Xing Zhu & Wenjun Wang",
+        "close_button": "Close",
+        "privacy_title": "Privacy Policy",
+        "privacy_responsible": "Responsible for data processing:",
+        "privacy_data_collection_title": "Collection and Storage of Personal Data",
+        "privacy_data_collection_text": "When filling out the reservation form, we collect the following data: Name, phone number, email address, reservation date/time, and other notes.",
+        "privacy_purpose_title": "Purpose of Data Processing",
+        "privacy_purpose_text": "The data is used exclusively for processing your reservation and is not passed on to third parties.",
+        "privacy_rights_title": "Your Rights",
+        "privacy_rights_text": "You have the right to information, correction, deletion, and restriction of the processing of your personal data.",
+        "privacy_contact_title": "Contact",
+        "privacy_contact_text": "For questions about data protection, please contact us at silkbowls@gmail.com."
+    },
+    "fr": {
+        "our_story": "Notre Histoire",
+        "menu": "Menu",
+        "impressum": "Mentions Légales",
+        "privacy": "Politique de Confidentialité",
+        "reserve_now": "Réserver maintenant",
+        "story_title": "La Philosophie d'un Bol de Nouilles “La perfection des nouilles faites à la main – comme de la soie dans un bol”",
+        "story_paragraph": "Silk-Bowls Noodle House · Une Promesse d'Authenticité Artisanale** La fraîcheur est notre fondement, l'artisanat notre âme. Dans la ville trépidante, Silk-Bowls Noodle House choisit la lenteur — Chaque jour à l'aube, nous nous approvisionnons en bœuf frais, tendons et tripes, les faisant mijoter séparément pendant 1 à 2 heures jusqu'à ce que la viande soit tendre, les tendons gélatineux et les tripes fermes sous la dent. La farine est pétrie, étirée, coupée sur place — avec un travail manuel, nous façonnons une vitalité résiliente, pas de pièces préfabriquées, pas de compromis. 🌙 La chaleur d'un bol de nouilles : Un héritage De la pression du bout des doigts expérimentés à la vapeur aromatique dansant dans le bouillon — Avec une persévérance presque obstinée, nous protégeons le goût original des nouilles chinoises faites à la main. Ce bol est un savoir-faire, plus encore : une continuation de la dévotion. 🌟 Silk-Bowls Noodle House : Avec un cœur pur · un goût pur. Nous servons sur la langue la sincérité des plats fraîchement préparés, pour accompagner la tradition des nouilles chinoises faites à la main sur un modeste bout de chemin.",
+        "braised_beef_noodles_title": "« La Mian de bœuf braisé »",
+        "braised_beef_noodles_desc": "Poitrine de bœuf tendrement braisée – juteuse, aromatique et fondante. Nouilles faites à la main avec une texture parfaite, imprégnées d'un bouillon savoureux – la cuisine chinoise maison à l'état pur ! Une cuillère d'huile de chili piquante ajoute la touche finale – c'est ainsi que l'on comprend l'âme des vraies nouilles de bœuf chinoises !",
+        "triple_beef_combo_title": "« La Mian Triple Combo Bœuf »",
+        "triple_beef_combo_desc": "Bouillon d'os de bœuf mijoté lentement pendant huit heures – clair et savoureux. Nouilles faites à la main, délicates mais fermes, garnies de trois sortes de bœuf : poitrine, tendon et filet. Une touche de bouillon secret du maître, des oignons verts frais – des perles d'huile rouge dansent à la surface. L'art culinaire chinois qui vous enchante en une bouchée !",
+        "beef_mix_noodle_soup_title": "« Soupe de nouilles au mélange de bœuf »",
+        "beef_mix_noodle_soup_desc": "Nouilles larges/fines faites à la main – élastiques comme des cordes d'arc – combinées avec trois spécialités de bœuf : des tendons fondants, un omasum croustillant et des tripes fermes. Le tout uni dans un bouillon maître vieux de plusieurs décennies, qui enchante par son arôme profond. Une cuillère d'huile de chili rouge brillante, mais pas trop épicée, couronne l'œuvre, garnie de coriandre et de l'harmonie parfaite du salé-sucré-umami – un summum de l'art traditionnel chinois des nouilles !",
+        "noodles_sesame_paste_title": "Nouilles à la pâte de sésame",
+        "noodles_sesame_paste_desc": "Nouilles fraîches faites à la main – refroidies à l'eau glacée pour une texture parfaite – recouvertes d'une sauce secrète au sésame : une trinité harmonieuse de pâte de sésame, de sauce soja et de vinaigre de riz, qui adhère crémeusement au bol. Des bâtonnets de concombre, des germes, des carottes et des miettes de cacahuètes fraîchement grillées apportent des contrastes croustillants à la douceur soyeuse. Le secret réside dans le parfum de noix et la douce saveur de la crème de sésame – une expérience gustative méditative comme le « ZEN dans un bol ».",
+        "peking_bean_paste_noodles_title": "« Nouilles à la pâte de haricots de Pékin (Zhajiang Mian) »",
+        "peking_bean_paste_noodles_desc": "Nouilles roulées à la main avec une consistance parfaite, recouvertes de la classique \"sauce rouge à l'huile\" – des dés de poitrine de porc frits dans une pâte de haricots sucrée et une sauce de soja fermentée, formant une couche brun foncé et aromatique. Accompagné de bâtonnets de concombre frais, de carottes ou de poivrons, garni de cacahuètes croustillantes – un jeu de couleurs comme les escaliers animés des hutongs de Pékin. Le secret ? L'équilibre parfait entre le salé et le sucré, qui enveloppe chaque nouille – un véritable goût de l'ancien Pékin !",
+        "sizzling_oil_noodles_title": "« Nouilles à l'huile frémissante »",
+        "sizzling_oil_noodles_desc": "Nouilles ceinture faites à la main – larges comme des ceintures – étirées trois fois dans l'eau bouillante jusqu'à ce qu'elles soient parfaitement al dente. Lorsque l'huile chaude est versée sur l'ail et les flocons de chili avec un « Zzzzt ! » grésillant, un arôme se dégage qui met l'eau à la bouche. En plus, des bâtonnets de concombre croquants, des carottes sucrées et des cacahuètes grillées dorées – tout simplement incroyable ! Assez épicé pour faire transpirer, mais pas trop agressif – so good you won't want to put your chopsticks down!",
+        "menu_section_title": "Menu",
+        "view_pdf_menu": "Voir le menu PDF",
+        "reservation_form_title": "Formulaire de réservation",
+        "name_placeholder": "Nom",
+        "email_placeholder": "Votre adresse e-mail",
+        "date_placeholder": "Date",
+        "time_placeholder": "Heure",
+        "persons_placeholder": "Nombre de personnes",
+        "phone_placeholder": "Numéro de téléphone",
+        "notes_placeholder": "Notes supplémentaires (facultatif)",
+        "submit_button": "Envoyer",
+        "footer_text": "&copy; 2025 味纯园 - Handmade Noodles. Tous droits réservés.",
+        "cookie_message": "Ce site web utilise des cookies pour vous garantir la meilleure expérience.",
+        "cookie_dismiss": "Compris !",
+        "cookie_link": "En savoir plus",
+        "impressum_title": "Mentions Légales",
+        "impressum_address": "Weserstraße 12",
+        "impressum_city": "60329 Francfort-sur-le-Main",
+        "impressum_tel": "Tél. (069) 234779",
+        "impressum_email": "E-mail: silkbowls@gmail.com",
+        "impressum_gesch": "Gérants : Jia Xing Zhu & Wenjun Wang",
+        "close_button": "Fermer",
+        "privacy_title": "Politique de Confidentialité",
+        "privacy_responsible": "Responsable du traitement des données :",
+        "privacy_data_collection_title": "Collecte et stockage des données personnelles",
+        "privacy_data_collection_text": "Lors du remplissage du formulaire de réservation, nous collectons les données suivantes : Nom, numéro de téléphone, adresse e-mail, date/heure de la réservation et autres remarques.",
+        "privacy_purpose_title": "But du traitement des données",
+        "privacy_purpose_text": "Les données sont utilisées exclusivement pour le traitement de votre réservation et ne sont pas transmises à des tiers.",
+        "privacy_rights_title": "Vos droits",
+        "privacy_rights_text": "Vous avez le droit d'accès, de rectification, de suppression et de limitation du traitement de vos données personnelles.",
+        "privacy_contact_title": "Contact",
+        "privacy_contact_text": "Pour toute question concernant la protection des données, veuillez nous contacter à silkbowls@gmail.com."
+    },
+    "es": {
+        "our_story": "Nuestra Historia",
+        "menu": "Menú",
+        "impressum": "Aviso Legal",
+        "privacy": "Política de Privacidad",
+        "reserve_now": "Reservar ahora",
+        "story_title": "La Filosofía de un Cuenco de Fideos “Perfección de Fideos Hechos a Mano – Como Seda en un Cuenco”",
+        "story_paragraph": "Silk-Bowls Noodle House · Una Promesa de Autenticidad Artesanal** La frescura es nuestro fundamento, la artesanía nuestra alma. En la bulliciosa ciudad, Silk-Bowls Noodle House elige la lentitud — Diariamente al amanecer, nos abastecemos de carne de res fresca, tendones y callos, estofándolos por separado durante 1-2 horas hasta que la carne esté tierna, los tendones gelatinosos y los callos firmes al bocado. La harina se amasa, se estira, se corta en el lugar — con mano de obra, damos forma a una vitalidad resistente, sin piezas prefabricadas, sin compromiso. 🌙 La calidez de un cuenco de fideos: Una herencia Desde la presión de las yemas de los dedos experimentados hasta el vapor aromático que baila en el caldo — Con una persistencia casi obstinada, conservamos el sabor original de los fideos chinos hechos a mano. Este cuenco es artesanía, más aún: una continuación de la dedicación. 🌟 Silk-Bowls Noodle House: Con un corazón puro · sabor puro. Servimos en la lengua la sinceridad de los alimentos recién preparados, para acompañar la tradición china de los fideos hechos a mano un modesto pedazo de camino.",
+        "braised_beef_noodles_title": "“La Mian de Res Estofada”",
+        "braised_beef_noodles_desc": "Falda de res estofada tiernamente – jugosa, aromática y suave como la mantequilla. ¡Fideos hechos a mano con la textura perfecta, empapados en un caldo sabroso – pura comida casera china! Una cuchara de aceite de chile picante añade el toque final – ¡así se entiende el alma de los auténticos fideos de res chinos!",
+        "triple_beef_combo_title": "“La Mian de Combo Triple de Res”",
+        "triple_beef_combo_desc": "Caldo de huesos de res cocido a fuego lento durante ocho horas – claro y sabroso. Fideos hechos a mano, delicados pero firmes, cubiertos con tres tipos de res: falda, tendón y filete. Un chorrito de caldo secreto del maestro, cebolla verde fresca – perlas de aceite rojo bailan en la superficie. ¡Arte culinario chino que te encanta con un solo bocado!",
+        "beef_mix_noodle_soup_title": "“Sopa de Fideos con Mezcla de Res”",
+        "beef_mix_noodle_soup_desc": "Fideos anchos/finos hechos a mano – elásticos como cuerdas de arco – combinados con tres especialidades de res: tendones que se derriten en la boca, librillo crujiente y callos firmes. Todo unido en un caldo maestro de décadas, que encanta con su profundo aroma. Una cuchara de aceite de chile rojo brillante, pero no demasiado picante, corona la obra, adornada con cilantro y la armonía perfecta de salado-dulce-umami – ¡un punto culminante del arte tradicional chino de los fideos!",
+        "noodles_sesame_paste_title": "Fideos con Pasta de Sésamo",
+        "noodles_sesame_paste_desc": "Fideos frescos hechos a mano – enfriados rápidamente para la mordida perfecta – cubiertos con salsa secreta de sésamo: una trinidad armoniosa de pasta de sésamo, salsa de soja y vinagre de arroz, que se adhiere cremosamente al tazón. Tiras de pepino, brotes, zanahorias y migas de cacahuete recién tostadas proporcionan contrastes crujientes a la suavidad sedosa. El secreto reside en el aroma a nuez y la dulzura suave de la crema de sésamo – ¡una experiencia de sabor meditativa como “ZEN en un cuenco”!",
+        "peking_bean_paste_noodles_title": "“Fideos con Pasta de Frijoles de Pekín (Zhajiang Mian)”",
+        "peking_bean_paste_noodles_desc": "Fideos hechos a mano con una textura perfecta, cubiertos con la clásica \"salsa roja de aceite\" – cubos de panceta de cerdo fritos en pasta de frijoles dulces y salsa de soja fermentada, formando una capa aromática de color marrón oscuro. Acompañado de tiras frescas de pepino, zanahorias o pimientos, adornado con cacahuetes crujientes – ¡un juego de colores como las animadas escaleras de los hutongs de Pekín! ¿El secreto? El equilibrio perfecto entre lo salado y lo dulce, que envuelve cada fideo – ¡un verdadero sabor del antiguo Pekín!",
+        "sizzling_oil_noodles_title": "“Fideos de Aceite Chispeante”",
+        "sizzling_oil_noodles_desc": "Fideos anchos hechos a mano – anchos como cinturones – estirados tres veces en agua hirviendo hasta que estén perfectamente al dente. Cuando el aceite caliente se vierte con un siseo de \"¡Zzzzt!\" sobre el ajo y los copos de chile, se libera un aroma que hace la boca agua. Además, tiras de pepino crujientes, zanahorias dulces y cacahuetes tostados dorados – ¡simplemente impresionante! Lo suficientemente picante como para hacerte sudar, pero no demasiado abrumador – ¡tan bueno que no querrás soltar los palillos!",
+        "menu_section_title": "Menú",
+        "view_pdf_menu": "Ver menú PDF",
+        "reservation_form_title": "Formulario de Reserva",
+        "name_placeholder": "Nombre",
+        "email_placeholder": "Su dirección de correo electrónico",
+        "date_placeholder": "Fecha",
+        "time_placeholder": "Hora",
+        "persons_placeholder": "Número de Personas",
+        "phone_placeholder": "Número de teléfono",
+        "notes_placeholder": "Notas adicionales (opcional)",
+        "submit_button": "Enviar",
+        "footer_text": "&copy; 2025 味纯园 - Handmade Noodles. Todos los derechos reservados.",
+        "cookie_message": "Este sitio web utiliza cookies para asegurar la mejor experiencia.",
+        "cookie_dismiss": "¡Entendido!",
+        "cookie_link": "Saber más",
+        "impressum_title": "Aviso Legal",
+        "impressum_address": "Weserstraße 12",
+        "impressum_city": "60329 Fráncfort del Meno",
+        "impressum_tel": "Tel. (069) 234779",
+        "impressum_email": "Correo electrónico: silkbowls@gmail.com",
+        "impressum_gesch": "Directores Generales: Jia Xing Zhu & Wenjun Wang",
+        "close_button": "Cerrar",
+        "privacy_title": "Política de Privacidad",
+        "privacy_responsible": "Responsable del tratamiento de datos:",
+        "privacy_data_collection_title": "Recogida y Almacenamiento de Datos Personales",
+        "privacy_data_collection_text": "Al rellenar el formulario de reserva, recopilamos los siguientes datos: Nombre, número de teléfono, dirección de correo electrónico, fecha/hora de la reserva y otras notas.",
+        "privacy_purpose_title": "Finalidad del Tratamiento de Datos",
+        "privacy_purpose_text": "Los datos se utilizan exclusivamente para procesar su reserva y no se transmiten a terceros.",
+        "privacy_rights_title": "Sus Derechos",
+        "privacy_rights_text": "Tiene derecho a la información, rectificación, eliminación y restricción del tratamiento de sus datos personales.",
+        "privacy_contact_title": "Contacto",
+        "privacy_contact_text": "Para preguntas sobre protección de datos, contáctenos en silkbowls@gmail.com."
+    },
+    "it": {
+        "our_story": "La Nostra Storia",
+        "menu": "Menù",
+        "impressum": "Colophon",
+        "privacy": "Informativa sulla Privacy",
+        "reserve_now": "Prenota ora",
+        "story_title": "La Filosofia di una Ciotola di Noodles “Perfezione di Noodles Fatti a Mano – Come Seta in una Ciotola”",
+        "story_paragraph": "Silk-Bowls Noodle House · Una Promessa di Autenticità Artigianale** La freschezza è il nostro fondamento, l'artigianato la nostra anima. Nella città frenetica, Silk-Bowls Noodle House sceglie la lentezza — Ogni giorno all'alba, ci procuriamo carne di manzo fresca, tendini e trippa, cuocendoli separatamente per 1-2 ore finché la carne è tenera, i tendini gelatinosi e la trippa soda al morso. La farina viene impastata, tirata, tagliata sul posto — con il lavoro manuale, formiamo una vitalità resiliente, nessun pezzo prefabbricato, nessun compromesso. 🌙 Il calore di una ciotola di noodles: Un'eredità Dalla pressione delle punte delle dita esperte al vapore aromatico che danza nel brodo — Con una persistenza quasi ostinata, custodiamo il gusto originale dei noodles cinesi fatti a mano. Questa ciotola è artigianato, di più: una continuazione della dedizione. 🌟 Silk-Bowls Noodle House: Con un cuore puro · gusto puro. Serviamo sulla lingua la sincerità del cibo appena preparato, per accompagnare la tradizione cinese dei noodles fatti a mano un modesto pezzo di strada.",
+        "braised_beef_noodles_title": "“La Mian di Manzo Brasato”",
+        "braised_beef_noodles_desc": "Pancia di manzo teneramente brasata – succosa, aromatica e burrosa. Noodles tirati a mano con una masticabilità perfetta, imbevuti di brodo saporito – pura cucina casalinga cinese! Un cucchiaio di olio di peperoncino piccante aggiunge il tocco finale – è così che si comprende l'anima dei veri noodles di manzo cinesi!",
+        "triple_beef_combo_title": "“La Mian Triple Combo Manzo”",
+        "triple_beef_combo_desc": "Brodo di ossa di manzo cotto a fuoco lento per otto ore – chiaro e saporito. Noodles tirati a mano, delicati ma sodi, conditi con tre tipi di manzo: pancia, tendine e filetto. Un tocco di brodo segreto del maestro, cipollina fresca – perle di olio rosso danzano sulla superficie. L'arte culinaria cinese che ti incanta con un morso!",
+        "beef_mix_noodle_soup_title": "“Zuppa di Noodles Misto Manzo”",
+        "beef_mix_noodle_soup_desc": "Noodles larghi/sottili tirati a mano – elastici come corde d'arco – combinati con tre specialità di manzo: tendini che si sciolgono in bocca, trippa croccante e trippa soda. Il tutto unito in un brodo maestro decennale, che incanta con il suo aroma profondo. Un cucchiaio di olio di peperoncino rosso lucido, ma non troppo piccante, corona l'opera, guarnito con coriandolo e la perfetta armonia di salato-dolce-umami – un culmine dell'arte tradizionale cinese dei noodles!",
+        "noodles_sesame_paste_title": "Noodles con Pasta di Sesamo",
+        "noodles_sesame_paste_desc": "Noodles freschi tirati a mano – raffreddati in acqua ghiacciata per una masticabilità perfetta – ricoperti da una salsa segreta al sesamo: una trinità armoniosa di pasta di sesamo, salsa di soia e aceto di riso, che aderisce cremosamente alla ciotola. Strisce di cetriolo, germogli, carote e briciole di arachidi appena tostate forniscono contrasti croccanti alla morbidezza setosa. Il segreto risiede nell'aroma di nocciola e nella dolcezza delicata della crema di sesamo – un'esperienza gustativa meditativa come \"ZEN in una Ciotola\".",
+        "peking_bean_paste_noodles_title": "“Noodles con Salsa di Fagioli di Pechino (Zhajiang Mian)”",
+        "peking_bean_paste_noodles_desc": "Noodles arrotolati a mano con una consistenza perfetta, ricoperti dalla classica \"salsa rossa all'olio\" – cubetti di pancetta di maiale fritti in pasta di fagioli dolci e salsa di soia fermentata, formando una copertura marrone scuro e aromatica. Accompagnati da strisce fresche di cetriolo, carote o peperoni, guarniti con arachidi croccanti – un gioco di colori come le vivaci scale negli hutong di Pechino. Il segreto? Il perfetto equilibrio tra salato e dolce, che avvolge ogni singolo noodle – un vero sapore dell'antica Pechino!",
+        "sizzling_oil_noodles_title": "“Noodles all'Olio Sfrigolante”",
+        "sizzling_oil_noodles_desc": "Noodles fatti a mano a forma di cintura – larghi come cinture – tirati tre volte in acqua bollente finché non sono perfettamente al dente. Quando l'olio caldo viene versato con un sfrigolio \"Zzzzt!\" su aglio e fiocchi di peperoncino, si sprigiona un aroma che fa venire l'acquolina in bocca. Inoltre, strisce di cetriolo croccanti, carote dolci e arachidi tostate dorate – semplicemente sbalorditivo! Abbastanza piccante da farti sudare, ma non troppo prepotente – così buono che non vorrai più posare le bacchette!",
+        "menu_section_title": "Menù",
+        "view_pdf_menu": "Visualizza Menù PDF",
+        "reservation_form_title": "Modulo di Prenotazione",
+        "name_placeholder": "Nome",
+        "email_placeholder": "Il tuo indirizzo email",
+        "date_placeholder": "Data",
+        "time_placeholder": "Ora",
+        "persons_placeholder": "Numero di persone",
+        "phone_placeholder": "Numero di telefono",
+        "notes_placeholder": "Note aggiuntive (opzionale)",
+        "submit_button": "Invia",
+        "footer_text": "&copy; 2025 味纯园 - Handmade Noodles. Tutti i diritti riservati.",
+        "cookie_message": "Questo sito web utilizza i cookie per assicurarti la migliore esperienza.",
+        "cookie_dismiss": "Capito!",
+        "cookie_link": "Scopri di più",
+        "impressum_title": "Colophon",
+        "impressum_address": "Weserstraße 12",
+        "impressum_city": "60329 Francoforte sul Meno",
+        "impressum_tel": "Tel. (069) 234779",
+        "impressum_email": "E-mail: silkbowls@gmail.com",
+        "impressum_gesch": "Amministratori: Jia Xing Zhu & Wenjun Wang",
+        "close_button": "Chiudi",
+        "privacy_title": "Informativa sulla Privacy",
+        "privacy_responsible": "Responsabile del trattamento dei dati:",
+        "privacy_data_collection_title": "Raccolta e Archiviazione dei Dati Personali",
+        "privacy_data_collection_text": "Compilando il modulo di prenotazione, raccogliamo i seguenti dati: Nome, numero di telefono, indirizzo e-mail, data/ora della prenotazione e altre note.",
+        "privacy_purpose_title": "Scopo del Trattamento dei Dati",
+        "privacy_purpose_text": "I dati vengono utilizzati esclusivamente per l'elaborazione della tua prenotazione e non vengono trasmessi a terzi.",
+        "privacy_rights_title": "I Tuoi Diritti",
+        "privacy_rights_text": "Hai il diritto di accesso, rettifica, cancellazione e limitazione del trattamento dei tuoi dati personali.",
+        "privacy_contact_title": "Contatti",
+        "privacy_contact_text": "Per domande sulla protezione dei dati, contattaci a silkbowls@gmail.com."
+    }
+};
+  </script>
+
+  <script>
+window.addEventListener("load", function(){
+  window.cookieconsent.initialise({
+    palette: {
+      popup: { background: "#edeff5", text: "#838391" },
+      button: { background: "#c0392b", text: "#fff" }
+    },
+    theme: "classic",
+    position: "bottom",
+    content: {
+      message: "Diese Website verwendet Cookies, um Ihnen das beste Erlebnis zu bieten.",
+      dismiss: "Verstanden",
+      link: "Mehr erfahren",
+      href: "/datenschutz.html" // oder "#", du hast bereits Datenschutz-Popups
+    }
+  })
+});
+</script>
+
+<script>
+  document.querySelectorAll('.gallery img').forEach(img => {
+    img.ondblclick = function () {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      modalImg.src = this.src;
+      modal.style.display = 'flex';
+    };
+  });
+</script>
+
+
+  <div class="impressum-modal" onclick="if(event.target.className==='impressum-modal')this.style.display='none'">
+  <div style="background:white; padding:2rem; border-radius:12px; max-width:500px; width:90%">
+    <h2 data-i18n="impressum_title">Impressum</h2>
+    <p>
+      <strong data-i18n="impressum_company">Silk Bowls GbR</strong><br>
+      <span data-i18n="impressum_address">Weserstraße 12</span><br>
+      <span data-i18n="impressum_city">60329 Frankfurt am Main</span><br><br>
+      <span data-i18n="impressum_tel">Tel. (069) 234779</span><br>
+      <span data-i18n="impressum_email">E-Mail: silkbowls@gmail.com</span><br><br>
+      <span data-i18n="impressum_gesch">Geschäftsführer: Jia Xing Zhu &amp; Wenjun Wang</span>
+    </p>
+    <button onclick="document.querySelector('.impressum-modal').style.display='none'" style="margin-top:1rem" data-i18n="close_button">Schließen</button>
+  </div>
+</div>
+
+<div class="privacy-modal" onclick="if(event.target.className==='privacy-modal')this.style.display='none'">
+  <div style="background:white; padding:2rem; border-radius:12px; max-width:600px; width:90%; max-height:90%; overflow:auto;">
+    <h2 data-i18n="privacy_title">Datenschutzerklärung</h2>
+    <p>
+      <span data-i18n="privacy_responsible">Verantwortlich für die Datenverarbeitung:</span><br>
+      <strong>Silk Bowls GbR</strong><br>
+      Weserstraße 12, 60329 Frankfurt am Main<br>
+      E-Mail: silkbowls@gmail.com
+    </p>
+
+    <h3 data-i18n="privacy_data_collection_title">Erhebung und Speicherung personenbezogener Daten</h3>
+    <p data-i18n="privacy_data_collection_text">
+      Beim Ausfüllen des Reservierungsformulars erheben wir folgende Daten:<br>
+      Name, Telefonnummer, E-Mail-Adresse, Datum/Uhrzeit der Reservierung und sonstige Anmerkungen.
+    </p>
+
+    <h3 data-i18n="privacy_purpose_title">Zweck der Datenverarbeitung</h3>
+    <p data-i18n="privacy_purpose_text">
+      Die Daten werden ausschließlich zur Bearbeitung Ihrer Reservierung verwendet und nicht an Dritte weitergegeben.
+    </p>
+
+    <h3 data-i18n="privacy_rights_title">Ihre Rechte</h3>
+    <p data-i18n="privacy_rights_text">
+      Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer personenbezogenen Daten.
+    </p>
+
+    <h3 data-i18n="privacy_contact_title">Kontakt</h3>
+    <p data-i18n="privacy_contact_text">
+      Bei Fragen zum Datenschutz kontaktieren Sie uns bitte unter silkbowls@gmail.com.
+    </p>
+
+    <button onclick="document.querySelector('.privacy-modal').style.display='none'" style="margin-top:1rem" data-i18n="close_button">Schließen</button>
+  </div>
+</div>
+
+<div id="imageModal" onclick="this.style.display='none'" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+">
+  <img id="modalImage" src="" style="max-width: 90%; max-height: 90%; border-radius: 12px;">
+</div>
+
+<script>
+    // Language translation logic
+    const languageSelect = document.getElementById('language-select');
+
+    function setLanguage(lang) {
+        // Update the lang attribute of the HTML tag
+        document.documentElement.lang = lang;
+
+        // Loop through all elements with data-i18n attribute
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            if (translations[lang] && translations[lang][key]) {
+                element.textContent = translations[lang][key];
+            }
+        });
+
+        // Loop through all input/textarea elements with data-i18n-placeholder attribute
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+            const key = element.getAttribute('data-i18n-placeholder');
+            if (translations[lang] && translations[lang][key]) {
+                element.placeholder = translations[lang][key];
+            }
+        });
+
+        // Update cookie consent messages
+        if (window.cookieconsent) {
+            window.cookieconsent.initialise({
+                palette: {
+                    popup: { background: "#edeff5", text: "#838391" },
+                    button: { background: "#c0392b", text: "#fff" }
+                },
+                theme: "classic",
+                position: "bottom",
+                content: {
+                    message: translations[lang].cookie_message,
+                    dismiss: translations[lang].cookie_dismiss,
+                    link: translations[lang].cookie_link,
+                    href: "/datenschutz.html" // This link is static in the current setup
+                }
+            });
+        }
+
+        // Store selected language in local storage
+        localStorage.setItem('selectedLanguage', lang);
+    }
+
+    // Initialize language on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const storedLang = localStorage.getItem('selectedLanguage') || 'de'; // Default to German
+        languageSelect.value = storedLang;
+        setLanguage(storedLang);
+    });
+
+    // Add event listener for language change
+    languageSelect.addEventListener('change', (event) => {
+        setLanguage(event.target.value);
+    });
+</script>
+
+</body>
+</html>
